@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario Simple y Cookies</title>
+</head>
+<body>
+
+    <h2>Formulario Simple</h2>
+
+    <form id="miFormulario">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required>
+
+        <br>
+
+        <label for="edad">Edad:</label>
+        <input type="number" id="edad" name="edad" required>
+
+        <br>
+
+        <input type="submit" value="Guardar Datos">
+    </form>
+
+    <script>
+        document.getElementById('miFormulario').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Obtener los valores del formulario
+            const nombre = document.getElementById('nombre').value;
+            const edad = document.getElementById('edad').value;
+
+            // Guardar los datos como cookies
+            document.cookie = `nombre=${encodeURIComponent(nombre)}; expires=${new Date(Date.now() + 3600000).toUTCString()}`;
+            document.cookie = `edad=${edad}; expires=${new Date(Date.now() + 3600000).toUTCString()}`;
+
+            // Recuperar los datos de las cookies y mostrarlos en un alert
+            const datosCookies = {
+                nombre: decodeURIComponent(getCookie('nombre')),
+                edad: getCookie('edad')
+            };
+
+            alert(JSON.stringify(datosCookies, null, 2));
+        });
+
+        // Función para obtener el valor de una cookie por su nombre
+        function getCookie(nombre) {
+            const cookies = document.cookie.split('; ');
+            for (const cookie of cookies) {
+                const [key, value] = cookie.split('=');
+                if (key === nombre) {
+                    return value;
+                }
+            }
+            return '';
+        }
+    </script>
+
+</body>
+</html>
